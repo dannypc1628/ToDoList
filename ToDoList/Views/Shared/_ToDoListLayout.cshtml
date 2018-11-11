@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @Styles.Render("~/Content/Bootstrap4/bootstrap.min.css")
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top>
+        <a class="navbar-brand" href="#">ToDoList</a>
+    </div>
+    <div class="container">
+        
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
+    @Scripts.Render("~/Content/JavaScript/jquery-3.3.1.slim.min.js")
+    @Scripts.Render("~/Content/JavaScript/popper.min.js")
+    @Scripts.Render("~/Content/Bootstrap4/bootstrap.min.js")
+</body>
+</html>
