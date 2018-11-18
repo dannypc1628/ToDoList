@@ -13,12 +13,13 @@ namespace ToDoList.Models.obj
         
         [DisplayName("帳號")]
         public string UserText { get; set; }
-
-        [DisplayName("密碼")]
-        public string Password { get; set; }
+                
 
         [DisplayName("名字")]
         public string Name { get; set; }
+
+        [DisplayName("密碼")]
+        public string Password { get; set; }
 
         [DisplayName("電話")]
         public string Phone { get; set; }

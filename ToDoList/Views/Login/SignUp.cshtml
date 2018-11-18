@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_ToDoListLayout.cshtml";
+}
+@model ToDoList.Models.Users
+
+<h2>SignUp</h2>
+
+<div class="text-center">
+    <div>
+        <form action="/Login/SignUp" method="post">
+            <label for="userName">帳號</label>
+            <input type="text" name="UserText" />
+            <br>
+            <label for="Name">名稱</label>
+            <input type="text" name="Name" />
+            <br />
+            <label for="password">密碼</label>
+            <input type="password" name="Password" />
+            <br>
+            <input type="submit" class="btn btn-primary" value="註冊" />
+            <br>
+        </form>
+
+
+    </div>
+    你輸入了 @Html.LabelFor(model => model.UserText)  +> @ViewBag.Text
+    <br />
+    @ViewBag.Text
+    <br />
+
+
+
+
+</div>
+
+

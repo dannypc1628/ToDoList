@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+    Layout = "~/Views/Shared/_ToDoListLayout.cshtml";
+}
+@model List<ToDoList.Models.Users>
+
+<h2>Show</h2>
+
+@foreach (var item in Model)
+{
+    <div>
+        <span>@item.ID</span>
+        ____
+        <span>@item.Name</span>
+        
+        
+    </div>
+    <br />
+}
