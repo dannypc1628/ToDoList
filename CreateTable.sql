@@ -12,7 +12,7 @@ Create Table DoList
 Create Table Users
 (
 	ID  int PRIMARY KEY IDENTITY (10000000,1),
-	UserText char(15) NOT NULL,
+	UserText char(15) UNIQUE NOT NULL,
 	Name nvarchar(10) NOT NULL,
 	Password  char(20) NOT NULL,
 	Phone char(20),

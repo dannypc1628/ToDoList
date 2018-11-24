@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using ToDoList.Models.obj;
 
 namespace ToDoList.Security
 {
@@ -21,8 +22,10 @@ namespace ToDoList.Security
             return Token;
         } 
 
-        public string CheckToken(string Token)
+        public TokenCheckObj CheckToken(string Token, string IP)
         {
+            if (Token is null)
+                return new TokenCheckObj { Status = false, ErrMsg = "沒有Token" };
             var JwtObj = Jose.JWT.Decode<Dictionary<string, Object>>(
                 Token,
                 Encoding.UTF8.GetBytes(Key),
@@ -31,10 +34,15 @@ namespace ToDoList.Security
             if (JwtObj["IP"].ToString() != null && JwtObj["IP"].ToString() != "")
             {
                 string Ans = "成功：" + JwtObj["Account"].ToString() + " " + JwtObj["IP"].ToString();
-                return Ans;
+                TokenCheckObj Output = new TokenCheckObj { Status = true, Account = JwtObj["Account"].ToString(), IP = JwtObj["IP"].ToString() };
+                return Output;
             }
             else
-                return "驗證失敗";
+            {
+                TokenCheckObj Output = new TokenCheckObj { Status = false,ErrMsg= "驗證失敗" };
+                return Output;
+            }
+                
         }
     }
 }

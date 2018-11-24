@@ -6,23 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @Styles.Render("~/Content/Bootstrap4/bootstrap.min.css")
+    @Scripts.Render("~/Content/JavaScript/jquery-3.3.1.min.js")
+    @Scripts.Render("~/Content/JavaScript/popper.min.js")
+    @Scripts.Render("~/Content/JavaScript/vue.js")
+    @Scripts.Render("~/Content/Bootstrap4/bootstrap.min.js")
 
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div class="navbar navbar-expand-lg navbar-light bg-primary fixed-top>
-        <a class="navbar-brand" href="#">ToDoList</a>
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top>
+        <a class="navbar-brand navbar-light" href="#">ToDoList</a>
     </div>
     <div class="container">
-        
+
         <div class="row">
             <br />
             @RenderBody()
             <br />
         </div>
     </div>
-    @Scripts.Render("~/Content/JavaScript/jquery-3.3.1.slim.min.js")
-    @Scripts.Render("~/Content/JavaScript/popper.min.js")
-    @Scripts.Render("~/Content/Bootstrap4/bootstrap.min.js")
+
 </body>
 </html>

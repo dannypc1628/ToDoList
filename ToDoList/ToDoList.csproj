@@ -179,6 +179,7 @@
     <Compile Include="Models\obj\DoListObj.cs" />
     <Compile Include="Models\obj\TeamObj.cs" />
     <Compile Include="Models\obj\Team_UsersObj.cs" />
+    <Compile Include="Models\obj\TokenCheckObj.cs" />
     <Compile Include="Models\obj\UsersObj.cs" />
     <Compile Include="Models\Team.cs">
       <DependentUpon>ToDoListContext.tt</DependentUpon>
@@ -211,6 +212,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\JavaScript\jquery-3.3.1.min.js" />
     <Content Include="Content\JavaScript\jquery-3.3.1.slim.min.js" />
     <Content Include="Content\JavaScript\popper.min.js" />
     <Content Include="Content\JavaScript\vue.js" />

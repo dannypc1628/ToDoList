@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ToDoList.Models;
 using ToDoList.Models.obj;
 using ToDoList.Security;
+using Newtonsoft.Json;
 
 namespace ToDoList.Controllers
 {
@@ -26,16 +27,18 @@ namespace ToDoList.Controllers
             {
                 ViewBag.Text = "登入成功";
                 JwtToken Jwt = new JwtToken();
-                string Token = Jwt.GetToken(UserText, Request.UserHostAddress);
-                return new
-                {
-                    status = true,
-                    token = Token
-                };
+                string Account_Id = Convert.ToString(Ans.ID);
+                string IP = Request.UserHostAddress;
+                string Token = Jwt.GetToken(Account_Id, IP);
+                Object Data = new { status=true,token=Token};
+                string Output = JsonConvert.SerializeObject(Data);
+                return Output;
+                
             }
             else{
-                ViewBag.Text = "帳號或密碼錯誤";
-                return View();
+                Object Data = new { status = false, errMsg ="帳號密碼錯誤" };
+                string Output = JsonConvert.SerializeObject(Data);
+                return Output;
             }
             
         }
@@ -46,10 +49,10 @@ namespace ToDoList.Controllers
             return "沒有資料";
         }
         [HttpPost]
-        public string CheckToken(String Token)
+        public TokenCheckObj CheckToken(String Token)
         {
             JwtToken Jwt = new JwtToken();
-            string Ans = Jwt.CheckToken(Token);
+            TokenCheckObj Ans = Jwt.CheckToken(Token, Request.UserHostAddress);
             return Ans;
         }
 

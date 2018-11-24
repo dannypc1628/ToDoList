@@ -5,23 +5,25 @@
 
 <div class="text-center">
     <div>
-        <form action="~/Login/Index" method="post">
+        <form  name="loginFrom">
             <label for="userName">帳號</label>
-            <input type="text" name="UserText" />
-            <br>
+            <input type="text"  id="userText"/>
+            <br />
             <label for="password">密碼</label>
-            <input type="password" name="Password" />
-            <br>
-            <input type="submit" class="btn btn-primary" value="登入" />
+            <input type="password"  id="password"/>
+            <br />
+            <span id="errMsg"></span>
+            <br />
+            <input type="button" class="btn btn-primary" value="登入" onclick="LoginClick()"/>
             <br>
         </form>
 
 
-        <label for="userName">@Html.DisplayNameFor(model => model.UserText)</label>
+        @*<label for="userName">@Html.DisplayNameFor(model => model.UserText)</label>
         <input type="text" id="userName" />
         <label for="password">@Html.DisplayNameFor(model => model.Password)</label>
         <input type="password" id="password" />
-        <input type="submit" />
+        <input type="submit" onclick="LoginClick()"/>*@
     </div>
 
     <br />
@@ -34,6 +36,30 @@
 
     <br>
     <a class="btn btn-outline-primary" href="/Login/Show">顯示帳號</a>
+
+    <script>
+        function LoginClick() {
+            console.log('按下登入');         
+            $.ajax({
+                type: 'POST',
+                url: '/Login',
+                data: "UserText=" + $('#userText').val() +"&Password=" + $('#password').val(),
+                dataType: "JSON",
+                error: function () {'連線異常'},
+                success: function (returnData) {
+                    console.log(returnData.status);
+                    if (returnData.status == true) {
+                        localStorage.token = returnData.token;
+                        document.location.href = "/home";
+                    }
+                    else {
+                        $('#errMsg').text(returnData.errMsg);
+                        //console.log('更改文字')
+                    }                   
+                 }                                
+            });
+        }
+    </script>
 
 
 </div>
