@@ -14,11 +14,20 @@ namespace ToDoList.Models
     
     public partial class Users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Users()
+        {
+            this.Project_Users = new HashSet<Project_Users>();
+        }
+    
         public int ID { get; set; }
-        public string UserText { get; set; }
+        public string Account { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project_Users> Project_Users { get; set; }
     }
 }

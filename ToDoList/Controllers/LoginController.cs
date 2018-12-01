@@ -12,7 +12,7 @@ namespace ToDoList.Controllers
 {
     public class LoginController : Controller
     {
-        private  ToDoListEntities db =new ToDoListEntities();
+        private  ToDoListDBEntities db =new ToDoListDBEntities();
         // GET: Login
         public ActionResult Index()
         {
@@ -20,48 +20,38 @@ namespace ToDoList.Controllers
             return View(new UsersObj());
         }
         [HttpPost]
-        public Object Index(String UserText,String Password)
+        public Object Index(String Account,String Password)
         {
-            var Ans = db.Users.Where(a=>a.UserText==UserText).Where( a=>a.Password==Password).FirstOrDefault();
-            if (Ans != null)
+            Users UserItem = db.Users.Where(a=>a.Account==Account).Where( a=>a.Password==Password).FirstOrDefault();
+            if (UserItem != null)
             {
-                ViewBag.Text = "登入成功";
+                //ViewBag.Text = "登入成功";
                 JwtToken Jwt = new JwtToken();
-                string Account_Id = Convert.ToString(Ans.ID);
+                string Users_Id = Convert.ToString(UserItem.ID);
                 string IP = Request.UserHostAddress;
-                string Token = Jwt.GetToken(Account_Id, IP);
-                Object Data = new { status=true,token=Token};
-                string Output = JsonConvert.SerializeObject(Data);
+                string Token = Jwt.GetToken(Users_Id, IP);
+                Object Result = new { status=true,token=Token};
+                string Output = JsonConvert.SerializeObject(Result);
                 return Output;
                 
             }
             else{
-                Object Data = new { status = false, errMsg ="帳號密碼錯誤" };
-                string Output = JsonConvert.SerializeObject(Data);
+                Object Result = new { status = false, errMsg ="帳號密碼錯誤" };
+                string Output = JsonConvert.SerializeObject(Result);
                 return Output;
             }
             
         }
         
-        public string CheckToken()
-        {
-            
-            return "沒有資料";
-        }
-        [HttpPost]
-        public TokenCheckObj CheckToken(String Token)
-        {
-            JwtToken Jwt = new JwtToken();
-            TokenCheckObj Ans = Jwt.CheckToken(Token, Request.UserHostAddress);
-            return Ans;
-        }
+        //[HttpPost]
+        //public TokenCheckObj CheckToken(String Token)
+        //{
+        //    JwtToken Jwt = new JwtToken();
+        //    TokenCheckObj Ans = Jwt.CheckToken(Token, Request.UserHostAddress);
+        //    return Ans;
+        //}
 
-
-        // GET: Login/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+       
 
         // GET: Login/Create
         public ActionResult SignUp()
@@ -72,12 +62,15 @@ namespace ToDoList.Controllers
 
         // POST: Login/Create
         [HttpPost]
-        public ActionResult SignUp(string UserText,string Name,string Password)
+        public ActionResult SignUp(string Account, string Name,string Password,string Phone,string Email)
         {
-            Users obj = new Users();
-            obj.UserText = UserText;
-            obj.Name = Name;
-            obj.Password = Password;
+            Users obj = new Users
+            {
+                Account = Account,
+                Name = Name,
+                Password = Password,
+                Email = Email
+            };
             try
             {
                 // TODO: Add insert logic here
@@ -87,7 +80,7 @@ namespace ToDoList.Controllers
             }
             catch
             {
-                ViewBag.Text = UserText ;
+                ViewBag.Text = Account;
                 return View(obj);
             }
         }

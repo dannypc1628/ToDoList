@@ -13,7 +13,7 @@ namespace ToDoList.Controllers
 {
     public class UsersObjsController : Controller
     {
-        private ToDoListEntities db = new ToDoListEntities();
+        private ToDoListDBEntities db = new ToDoListDBEntities();
 
         // GET: UsersObjs
         public ActionResult Index()

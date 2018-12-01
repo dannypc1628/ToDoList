@@ -6,11 +6,11 @@
 <div class="text-center">
     <div>
         <form  name="loginFrom">
-            <label for="userName">帳號</label>
-            <input type="text"  id="userText"/>
+            <label for="Account">帳號</label>
+            <input type="text"  id="Account"/>
             <br />
-            <label for="password">密碼</label>
-            <input type="password"  id="password"/>
+            <label for="Password">密碼</label>
+            <input type="password"  id="Password"/>
             <br />
             <span id="errMsg"></span>
             <br />
@@ -43,7 +43,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/Login',
-                data: "UserText=" + $('#userText').val() +"&Password=" + $('#password').val(),
+                data: "Account=" + $('#Account').val() +"&Password=" + $('#Password').val(),
                 dataType: "JSON",
                 error: function () {'連線異常'},
                 success: function (returnData) {

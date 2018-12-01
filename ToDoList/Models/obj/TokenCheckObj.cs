@@ -9,7 +9,7 @@ namespace ToDoList.Models.obj
     {
         public bool Status { get; set; }
 
-        public string Account { get; set; }
+        public string Users_Id { get; set; }
 
         public string IP { get; set; }
 

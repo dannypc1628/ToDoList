@@ -41,16 +41,16 @@
             list: [
                 {
                     ID: '123',
-                    Title: 'AABB123124',
+                    Title: '正在載入...',
                     Completed: false
                 }
             ]
 
         },
         methods: {
-            addToDo() {
+            addToDo:function() {
                 var title = this.newToDo.trim();
-                var id = Math.floor(Math.random() * 1000);
+                //var id = Math.floor(Math.random() * 1000);
                 console.log('使用者新增：' + this.newToDo);
                 if (!title) {
                     return;

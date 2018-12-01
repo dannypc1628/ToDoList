@@ -173,34 +173,37 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DoList.cs">
-      <DependentUpon>ToDoListContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\obj\DoListObj.cs" />
     <Compile Include="Models\obj\TeamObj.cs" />
     <Compile Include="Models\obj\Team_UsersObj.cs" />
     <Compile Include="Models\obj\TokenCheckObj.cs" />
     <Compile Include="Models\obj\UsersObj.cs" />
-    <Compile Include="Models\Team.cs">
-      <DependentUpon>ToDoListContext.tt</DependentUpon>
+    <Compile Include="Models\Project.cs">
+      <DependentUpon>ToDoListDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToDoListContext.Context.cs">
+    <Compile Include="Models\Project_Users.cs">
+      <DependentUpon>ToDoListDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToDoList.cs">
+      <DependentUpon>ToDoListDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToDoListDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ToDoListContext.Context.tt</DependentUpon>
+      <DependentUpon>ToDoListDB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToDoListContext.cs">
+    <Compile Include="Models\ToDoListDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ToDoListContext.tt</DependentUpon>
+      <DependentUpon>ToDoListDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToDoListContext.Designer.cs">
+    <Compile Include="Models\ToDoListDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ToDoListContext.edmx</DependentUpon>
+      <DependentUpon>ToDoListDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Users.cs">
-      <DependentUpon>ToDoListContext.tt</DependentUpon>
+      <DependentUpon>ToDoListDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\JwtToken.cs" />
@@ -220,27 +223,27 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\ToDoListContext.Context.tt">
+    <Content Include="Models\ToDoListDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ToDoListContext.Context.cs</LastGenOutput>
-      <DependentUpon>ToDoListContext.edmx</DependentUpon>
+      <DependentUpon>ToDoListDB.edmx</DependentUpon>
+      <LastGenOutput>ToDoListDB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ToDoListContext.tt">
+    <Content Include="Models\ToDoListDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ToDoListContext.edmx</DependentUpon>
-      <LastGenOutput>ToDoListContext.cs</LastGenOutput>
+      <DependentUpon>ToDoListDB.edmx</DependentUpon>
+      <LastGenOutput>ToDoListDB.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\ToDoListContext.edmx">
+    <EntityDeploy Include="Models\ToDoListDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ToDoListContext.Designer.cs</LastGenOutput>
+      <LastGenOutput>ToDoListDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\ToDoListContext.edmx.diagram">
-      <DependentUpon>ToDoListContext.edmx</DependentUpon>
+    <Content Include="Models\ToDoListDB.edmx.diagram">
+      <DependentUpon>ToDoListDB.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

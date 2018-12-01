@@ -11,11 +11,13 @@ namespace ToDoList.Security
     public class JwtToken
     {
         private string Key = "ABCD123";
-        public string GetToken(string UserText, string IP)
+        public string GetToken(string Users_Id, string IP)
         {
-            Dictionary<string, Object> Data = new Dictionary<string, Object>();
-            Data.Add("Account", UserText);
-            Data.Add("IP", IP);
+            Dictionary<string, Object> Data = new Dictionary<string, Object>
+            {
+                { "Users_Id", Users_Id },
+                { "IP", IP }
+            };
 
             string Token = Jose.JWT.Encode(Data, Encoding.UTF8.GetBytes(Key), JwsAlgorithm.HS512);
 
@@ -26,22 +28,40 @@ namespace ToDoList.Security
         {
             if (Token is null)
                 return new TokenCheckObj { Status = false, ErrMsg = "沒有Token" };
-            var JwtObj = Jose.JWT.Decode<Dictionary<string, Object>>(
-                Token,
-                Encoding.UTF8.GetBytes(Key),
-                JwsAlgorithm.HS512);
+            
+            try
+            {
+                var JwtObj = Jose.JWT.Decode<Dictionary<string, Object>>(
+                                Token,
+                                Encoding.UTF8.GetBytes(Key),
+                                JwsAlgorithm.HS512
+                                );
 
-            if (JwtObj["IP"].ToString() != null && JwtObj["IP"].ToString() != "")
-            {
-                string Ans = "成功：" + JwtObj["Account"].ToString() + " " + JwtObj["IP"].ToString();
-                TokenCheckObj Output = new TokenCheckObj { Status = true, Account = JwtObj["Account"].ToString(), IP = JwtObj["IP"].ToString() };
-                return Output;
+                if (JwtObj["IP"].ToString() != null && JwtObj["IP"].ToString() != "")
+                {
+                    string Ans = "成功：" + JwtObj["Users_Id"].ToString() + " " + JwtObj["IP"].ToString();
+                    TokenCheckObj CheckResult = new TokenCheckObj
+                    {
+                        Status = true,
+                        Users_Id = JwtObj["Users_Id"].ToString(),
+                        IP = JwtObj["IP"].ToString()
+                    };
+                    return CheckResult;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                TokenCheckObj Output = new TokenCheckObj { Status = false,ErrMsg= "驗證失敗" };
-                return Output;
+                System.Diagnostics.Debug.Write(ex);
             }
+                              
+                        
+            TokenCheckObj Result = new TokenCheckObj
+            {
+                Status = false,
+                ErrMsg = "驗證失敗"
+            };
+            return Result;
+            
                 
         }
     }

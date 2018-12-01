@@ -12,7 +12,7 @@ namespace ToDoList.Controllers
 {
     public class HomeController : Controller
     {
-        private ToDoListEntities db = new ToDoListEntities();
+        private ToDoListDBEntities db = new ToDoListDBEntities();
 
         public ActionResult Index()
         {
@@ -24,41 +24,64 @@ namespace ToDoList.Controllers
         {
             JwtToken Jwt = new JwtToken();
             string IP = Request.UserHostAddress;
-            TokenCheckObj Ans = Jwt.CheckToken(Token,IP);
-            List<DoList> DoListData = new List<DoList>();
-            if (Ans.Status)
+            TokenCheckObj TokenResult = Jwt.CheckToken(Token,IP);
+                
+            object Result = null;
+
+            if (TokenResult.Status)
             {
-                 DoListData = db.DoList.Where(a => a.Owner_ID == Ans.Account).ToList();
+                List<Models.ToDoList> DoListData = new List<Models.ToDoList>();
+                int Users_Id = Convert.ToInt32(TokenResult.Users_Id);
+                DoListData = db.ToDoList.Where(a => a.Owner_ID == Users_Id).ToList();
+                Result = new
+                {
+                    Status = true,
+                    List = DoListData
+                };
             }
-            object result = new { Status = true, List = DoListData };
-            string AAA=JsonConvert.SerializeObject(result);
-
-
-            return AAA;
+            else
+            {
+                Result = new { Status = true, ErrMsg = TokenResult.ErrMsg };
+            }
+            string Output = JsonConvert.SerializeObject(Result);
+            
+            return Output;
         }
+
         [HttpPost]
         public string AddToDo(string Token ,string Title)
         {
             JwtToken Jwt = new JwtToken();
             string IP = Request.UserHostAddress;
-            TokenCheckObj Ans = Jwt.CheckToken(Token, IP);
-            DoList DoListData = new DoList
+            TokenCheckObj TokenResult = Jwt.CheckToken(Token, IP);
+            Models.ToDoList DoListData = new Models.ToDoList
             {
-                Owner_ID = Ans.Account,
+                Owner_ID = Convert.ToInt32(TokenResult.Users_Id),
                 Title = Title,
                 Create_Date = DateTime.Now,
                 Completed = false
             };
 
-            if (Ans.Status)
-            {
-                
-                db.DoList.Add(DoListData);
+            object Result = null;
+            if (TokenResult.Status)
+            {                
+                db.ToDoList.Add(DoListData);
                 db.SaveChanges();
+                Result = new
+                {
+                    Status = true,
+                    ID = DoListData.ID,
+                    Title = Title,
+                    Completed = DoListData.Completed
+                };
             }
-            object result = new { Status = true, ID = DoListData.ID, Title= Title, Completed = DoListData.Completed };
-            string AAA = JsonConvert.SerializeObject(result);
-            return AAA;
+            else
+            {
+                Result = new { Status = false, ErrMsg = TokenResult.ErrMsg };
+            }
+ 
+            string Output = JsonConvert.SerializeObject(Result);
+            return Output;
         }
 
         [HttpPost]
@@ -66,20 +89,33 @@ namespace ToDoList.Controllers
         {
             JwtToken Jwt = new JwtToken();
             string IP = Request.UserHostAddress;
-            TokenCheckObj Ans = Jwt.CheckToken(Token, IP);
-            DoList toDo = new DoList();
+            TokenCheckObj TokenResult = Jwt.CheckToken(Token, IP);
+            Models.ToDoList DoListData = new Models.ToDoList();
 
-            if (Ans.Status)
+            object Result = null;
+
+            if (TokenResult.Status)
             {
-
-                toDo = db.DoList.Find(ID);
-                toDo.Completed = !toDo.Completed;
+                DoListData = db.ToDoList.Find(ID);
+                if (DoListData.Completed == false)
+                {
+                    DoListData.Completed_Date = DateTime.Now;
+                }                
+                DoListData.Completed = !DoListData.Completed;
                 db.SaveChanges();
-
+                Result = new { Status = true };
             }
-            object result = new { Status = true };
-            string AAA = JsonConvert.SerializeObject(result);
-            return AAA;
+            else
+            {
+                Result = new
+                {
+                    Status = false,
+                    ErrMsg = TokenResult.ErrMsg
+                };
+            }
+             
+            string Output = JsonConvert.SerializeObject(Result);
+            return Output;
         }
     }
 }

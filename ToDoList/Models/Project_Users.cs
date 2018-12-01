@@ -12,14 +12,13 @@ namespace ToDoList.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DoList
+    public partial class Project_Users
     {
-        public int ID { get; set; }
-        public string Owner_ID { get; set; }
-        public string Title { get; set; }
-        public string Detail { get; set; }
-        public Nullable<bool> Completed { get; set; }
-        public Nullable<System.DateTime> Create_Date { get; set; }
-        public Nullable<System.DateTime> Completed_Date { get; set; }
+        public int Idx { get; set; }
+        public Nullable<int> Project_ID { get; set; }
+        public Nullable<int> Users_ID { get; set; }
+    
+        public virtual Project Project { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

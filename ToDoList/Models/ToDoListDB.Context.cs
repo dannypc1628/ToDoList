@@ -13,10 +13,10 @@ namespace ToDoList.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ToDoListEntities : DbContext
+    public partial class ToDoListDBEntities : DbContext
     {
-        public ToDoListEntities()
-            : base("name=ToDoListEntities")
+        public ToDoListDBEntities()
+            : base("name=ToDoListDBEntities")
         {
         }
     
@@ -25,8 +25,9 @@ namespace ToDoList.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<DoList> DoList { get; set; }
-        public virtual DbSet<Team> Team { get; set; }
+        public virtual DbSet<Project> Project { get; set; }
+        public virtual DbSet<ToDoList> ToDoList { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Project_Users> Project_Users { get; set; }
     }
 }

@@ -10,24 +10,31 @@
 <div class="text-center">
     <div>
         <form action="/Login/SignUp" method="post">
-            <label for="userName">帳號</label>
-            <input type="text" name="UserText" />
+            <label for="Account">帳號</label>
+            <input type="text" name="Account" />
             <br>
             <label for="Name">名稱</label>
             <input type="text" name="Name" />
             <br />
-            <label for="password">密碼</label>
+            <label for="Password">密碼</label>
             <input type="password" name="Password" />
-            <br>
-            <input type="submit" class="btn btn-primary" value="註冊" />
+            <br />
+			<label for="Phone">電話</label>
+            <input type="text" name="Phone" />
+            <br />
+            <label for="Email">電子信箱</label>
+            <input type="email" name="Email" />
+            <br />
+            
+			<input type="submit" class="btn btn-primary" value="註冊" />
             <br>
         </form>
 
 
     </div>
-    你輸入了 @Html.LabelFor(model => model.UserText)  +> @ViewBag.Text
+    
     <br />
-    @ViewBag.Text
+    
     <br />
 
 
