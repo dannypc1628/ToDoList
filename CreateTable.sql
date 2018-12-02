@@ -24,6 +24,7 @@ Create Table Project
 )
 Create Table Project_Users
 (
-	Team_ID  int REFERENCES Project(ID),
-	User_ID  int REFERENCES Users(ID)
+	Idx int PRIMARY KEY IDENTITY (1,1),
+	Project_ID  int REFERENCES Project(ID),
+	Users_ID  int REFERENCES Users(ID)
 )

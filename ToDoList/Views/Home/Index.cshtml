@@ -1,21 +1,37 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.HomeTag = "Home";
 }
 
-<div id="toDoList">
-    <div class="col-lg-1">
+
+    <div class="col-2">
 
     </div>
 
-    <div class="col-lg-11">
+    <div class="col-10" id="toDoList">
         <div>
-            <label>新增事項</label>
-            <input v-model="newToDo" v-on:keyup.enter="addToDo">
+            <input v-model="newToDo" v-on:keyup.enter="addToDo" class="form-control" placeholder="新增事項">
         </div>
+		<br>
+        <br>
+        <label>進行中</label>
+        <div v-for="item in list" v-if="item.Completed==false" >
+            <div v-bind:data-Id="item.ID"  >
+                <div class=" align-self-center">
+                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="update(item.ID)"/>
+                    <label :for="item.ID" 
+                           :class="{'completed':item.Completed}">{{item.Title}}</label>
+                </div>
+            </div>
 
-        <div v-for="item in list">
+        </div>
+        <br>
+        <br>
+		<hr>
+
+        <label>已完成</label>
+        <div v-for="item in list" v-if="item.Completed==true">
             <div v-bind:data-Id="item.ID">
-                <div>
+                <div class="">
                     <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="update(item.ID)"/>
                     <label :for="item.ID" 
                            :class="{'completed':item.Completed}">{{item.Title}}</label>
@@ -27,7 +43,7 @@
 
 
 
-</div>
+
 <style>
     .completed{
         text-decoration:line-through
@@ -148,6 +164,7 @@
             }
         });
     }
+	
 
 
 

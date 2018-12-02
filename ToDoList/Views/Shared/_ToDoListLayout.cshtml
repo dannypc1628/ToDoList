@@ -12,19 +12,46 @@
     @Scripts.Render("~/Content/Bootstrap4/bootstrap.min.js")
 
     <title>@ViewBag.Title</title>
+    <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+      /*background-color:	#feeacd;*/
+    }
+    </style>
 </head>
-<body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top>
-        <a class="navbar-brand navbar-light" href="#">ToDoList</a>
-    </div>
+<body >
+
+    <header>
+        <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+            <a class="navbar-brand navbar-light" href="#">線上待辦清單</a>
+			@if(ViewBag.HomeTag != null){
+			<div class="d-flex flex-row-reverse w-100">
+				
+					<div class="btn btn-outline-light" onclick="Logout()">登出</div>	
+				
+			</div>
+			}
+        </div>
+    </header>
+
+    <br />
+            <br />
+            <br />
     <div class="container">
 
         <div class="row">
-            <br />
+            
             @RenderBody()
             <br />
         </div>
     </div>
+	<script>
+	function Logout(){
+		console.log('登出')
+		localStorage.clear();
+		document.location.href = "/Login";
+	}
+	</script>
 
 </body>
 </html>
