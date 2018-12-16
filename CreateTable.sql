@@ -6,7 +6,8 @@ Create Table ToDoList
 	Detail nvarchar(255),
 	Completed bit,
 	Create_Date datetime ,
-	Completed_Date datetime 
+	Completed_Date datetime ,
+	Deleted bit
 )
 Create Table Users
 (

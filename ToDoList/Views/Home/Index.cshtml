@@ -3,8 +3,11 @@
 }
 
 
-    <div class="col-2">
-
+    <div class="col-2 text-right">
+		<br>
+		<br>
+		
+		<span class="h3">全部</span>
     </div>
 
     <div class="col-10" id="toDoList">
@@ -14,13 +17,19 @@
 		<br>
         <br>
         <label>進行中</label>
-        <div v-for="item in list" v-if="item.Completed==false" >
+        <div v-for="item in list" v-if="item.Completed==false && item.Deleted!==true" >
             <div v-bind:data-Id="item.ID"  >
-                <div class=" align-self-center">
-                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="update(item.ID)"/>
-                    <label :for="item.ID" 
+                <div class=" align-self-center" v-if="item.ID!==clickedID">
+                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
+                    <label v-on:dblclick="edit(item)" 
                            :class="{'completed':item.Completed}">{{item.Title}}</label>
+					<button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
+							<span aria-hidden="true">&times;</span>
+					</button>
                 </div>
+				<div>
+					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keyup.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
+				</div>
             </div>
 
         </div>
@@ -29,12 +38,12 @@
 		<hr>
 
         <label>已完成</label>
-        <div v-for="item in list" v-if="item.Completed==true">
+        <div v-for="item in list" v-if="item.Completed==true && item.Deleted!==true">
             <div v-bind:data-Id="item.ID">
                 <div class="">
-                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="update(item.ID)"/>
-                    <label :for="item.ID" 
-                           :class="{'completed':item.Completed}">{{item.Title}}</label>
+                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
+                    <label :class="{'completed':item.Completed}" v-on:dblclick="edit(item)">{{item.Title}}</label>
+					<textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keyup.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
                 </div>
             </div>
 
@@ -60,7 +69,10 @@
                     Title: '正在載入...',
                     Completed: false
                 }
-            ]
+            ],
+			clickedID:'',
+			clickedTitle:'',
+			clickedDetail:''
 
         },
         methods: {
@@ -77,23 +89,23 @@
                     url: '/Home/AddToDo',
                     data: 'token=' + localStorage.token + '&Title=' + title,
                     dataType: "JSON",
-                    error: function () { '連線異常' },
+                    error: function () { console.log('連線異常') },
                     success: function (returnData) {
                         console.log(returnData);
                         if (returnData.Status == true) {
-                            window.location.reload();
-                            //this.list.push({
-                            //    ID: returnData.ID,
-                            //    Title: returnData.Title,
-                            //    Completed: returnData.Completed,
-                            //    Owner_ID: '12314234',
-                            //    Detail: '',
-                            //    Create_Date: null,
-                            //    Completed_Date: null
+                            //window.location.reload();
+                            app.list.push({
+                                ID: returnData.ID,
+                                Title: returnData.Title,
+                                Completed: returnData.Completed,
+                                Owner_ID: '12314234',
+                                Detail: '',
+                                Create_Date: null,
+                                Completed_Date: null
 
-                            //});
-                            newToDo = '';
-                            Console.log('新增成功');
+                            });
+                            app.newToDo = '';
+                            console.log('新增成功');
 
                         }
                         else {
@@ -110,32 +122,158 @@
             },
 
 
-            update: function (key) {
+            completed: function (key) {
 
-                console.log('使用者修改編號：' + key);
+                console.log('使用者勾選編號：' + key);
 
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Home/UpdateToDo',
+                    url: '/Home/UpdateToDoCompleted',
                     data: 'token=' + localStorage.token + '&ID=' + key,
                     dataType: "JSON",
-                    error: function () { '連線異常' },
+                    error: function () { console.log('連線異常') },
                     success: function (returnData) {
                         console.log(returnData);
                         if (returnData.Status == true) {
+						                         
+                            console.log('更新成功');
 
-                            newToDo = '';
-                            Console.log('更新成功');
+                        }
+                        else {
+                            alert("更新失敗，請重新整理");
+
+                        }
+                    }
+                });
+
+            },
+			deleted: function (item) {
+
+                console.log('使用者刪除編號：' + item.ID);
+				var thisIndex = this.list.findIndex(function (listItem,key){
+								return item.ID===listItem.ID
+							});
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/UpdateToDoDeleted',
+                    data: 'token=' + localStorage.token + '&ID=' + item.ID,
+                    dataType: "JSON",
+                    error: function () { console.log('連線異常') },
+                    success: function (returnData) {
+                        console.log(returnData);
+                        if (returnData.Status == true) {
+						    app.list[thisIndex].Deleted = true;                     
+                            console.log('刪除成功');
+
+                        }
+                        else {
+                            alert("刪除成功，請重新整理");
+
+                        }
+                    }
+                });
+
+            },
+
+			edit:function(item){
+				console.log('雙擊:',item.ID);
+				this.clickedID=item.ID;
+				this.clickedTitle=item.Title;
+				this.clickedDetail=item.Detail;
+
+			},
+			cancelEdit:function(){
+				console.log('取消編輯');
+				this.clickedID='';
+				this.clickedTitle='';
+				this.clickedDetail='';
+			},
+			updateTitle:function(item){
+				console.log('使用者修改編號：' + this.clickedID +'之標題');
+				var thisIndex = this.list.findIndex(function (listItem,key){
+								return item.ID===listItem.ID
+							});
+				axios.post('/Home/UpdateToDoTitle', {
+						token: localStorage.token,
+						ID: this.clickedID,
+						Title: this.clickedTitle						
+					})
+					.then(function(response) {
+						console.log(response);
+						if (response.data.Status == true) {
+							
+							app.list[thisIndex].Title=app.clickedTitle;
+                            app.clickedID='';
+							app.clickedTitle='';
+                            console.log('更新成功');
 
                         }
                         else {
                             alert("更新失敗");
 
                         }
+					})
+					.catch(function(error) {
+						console.log(error);
+					})
+
+                /*$.ajax({
+                    type: 'POST',
+                    url: '/Home/UpdateToDoTitle',
+                    data: 'token=' + localStorage.token + '&ID=' + this.clickedID +  '&Title='+this.clickedTitle,
+                    dataType: "JSON",
+                    error: function () { console.log('連線異常') },
+                    success: function (returnData) {
+                        console.log(returnData);
+                        if (returnData.Status == true) {
+							item.Title=this.clickedTitle;
+                            app.clickedID='';
+							app.clickedTitle='';
+							app.clickedDetail='';
+                            console.log('更新成功');
+
+                        }
+                        else {
+                            alert("更新失敗");
+
+                        }
+						
                     }
-                });
-            }
+                });*/
+			},
+			updateDetail:function(item){
+				console.log('使用者修改編號：' + this.clickedID +'之標題');
+				var thisIndex = this.list.findIndex(function (listItem,key){
+								return item.ID===listItem.ID
+							});
+				axios.post('/Home/UpdateToDoDetail', {
+						token: localStorage.token,
+						ID: this.clickedID,
+						Detail: this.clickedDetail						
+					})
+					.then(function(response) {
+						console.log(response);
+						if (response.data.Status == true) {
+							
+							app.list[thisIndex].Detail=app.clickedDetail;
+                            app.clickedID='';
+							app.clickedTitle='';
+							app.clickedDetail='';
+                            console.log('更新成功');
+
+                        }
+                        else {
+                            alert("更新失敗");
+
+                        }
+					})
+					.catch(function(error) {
+						console.log(error);
+					})
+			}
+
         }
     });
 
@@ -148,7 +286,7 @@
             url: '/Home/GetToDoList',
             data: 'token='+localStorage.token,
             dataType: "JSON",
-            error: function () { '連線異常' },
+            error: function () { console.log('連線異常') },
             success: function (returnData) {
                 console.log(returnData);
                 if (returnData.Status == true) {

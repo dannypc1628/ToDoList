@@ -169,6 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\UsersObjsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -215,6 +216,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\JavaScript\axios.min.js" />
     <Content Include="Content\JavaScript\jquery-3.3.1.min.js" />
     <Content Include="Content\JavaScript\jquery-3.3.1.slim.min.js" />
     <Content Include="Content\JavaScript\popper.min.js" />
@@ -245,6 +247,7 @@
     <Content Include="Models\ToDoListDB.edmx.diagram">
       <DependentUpon>ToDoListDB.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\ToDoListUsingASP - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -285,6 +288,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\operater\" />
+    <Folder Include="Views\Project\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

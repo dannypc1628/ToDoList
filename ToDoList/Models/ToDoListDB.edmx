@@ -31,6 +31,7 @@
           <Property Name="Completed" Type="bit" />
           <Property Name="Create_Date" Type="datetime" />
           <Property Name="Completed_Date" Type="datetime" />
+          <Property Name="Deleted" Type="bit" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -104,6 +105,7 @@
           <Property Name="Completed" Type="Boolean" />
           <Property Name="Create_Date" Type="DateTime" Precision="3" />
           <Property Name="Completed_Date" Type="DateTime" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -182,6 +184,7 @@
           <EntitySetMapping Name="ToDoList">
             <EntityTypeMapping TypeName="ToDoListDBModel.ToDoList">
               <MappingFragment StoreEntitySet="ToDoList">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Owner_ID" ColumnName="Owner_ID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

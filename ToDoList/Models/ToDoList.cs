@@ -21,5 +21,6 @@ namespace ToDoList.Models
         public Nullable<bool> Completed { get; set; }
         public Nullable<System.DateTime> Create_Date { get; set; }
         public Nullable<System.DateTime> Completed_Date { get; set; }
+        public Nullable<bool> Deleted { get; set; }
     }
 }
