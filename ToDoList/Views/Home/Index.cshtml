@@ -192,9 +192,11 @@
 			},
 			updateTitle:function(item){
 				console.log('使用者修改編號：' + this.clickedID +'之標題');
-				var thisIndex = this.list.findIndex(function (listItem,key){
-								return item.ID===listItem.ID
-							});
+                var thisIndex = getThisIndex(item);
+                //var thisIndex2 = this.list.findIndex(function (listItem, key) {
+                //    return item.ID === listItem.ID
+                //});
+                //console.log('thisIndex2 is ' + thisIndex2);
 				axios.post('/Home/UpdateToDoTitle', {
 						token: localStorage.token,
 						ID: this.clickedID,
@@ -203,8 +205,7 @@
 					.then(function(response) {
 						console.log(response);
 						if (response.data.Status == true) {
-							
-							app.list[thisIndex].Title=app.clickedTitle;
+                            app.list[thisIndex].Title=app.clickedTitle;
                             app.clickedID='';
 							app.clickedTitle='';
                             console.log('更新成功');
@@ -245,9 +246,7 @@
 			},
 			updateDetail:function(item){
 				console.log('使用者修改編號：' + this.clickedID +'之標題');
-				var thisIndex = this.list.findIndex(function (listItem,key){
-								return item.ID===listItem.ID
-							});
+                var thisIndex = getThisIndex(item);
 				axios.post('/Home/UpdateToDoDetail', {
 						token: localStorage.token,
 						ID: this.clickedID,
@@ -302,7 +301,18 @@
             }
         });
     }
-	
+
+    function getThisIndex(item) {
+        var thisIndex;
+        app.list.some(function (el, i) {
+            if (el.ID === item.ID) {
+                console.log('thisIndex is ' + i)
+                thisIndex = i;
+            }
+        });
+        //console.log('getThisIndex  thisIndex is ' + thisIndex)
+        return thisIndex;
+    }
 
 
 
