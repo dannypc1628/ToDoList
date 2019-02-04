@@ -16,22 +16,41 @@
         </div>
 		<br>
         <br>
-        <label>進行中</label>
+        <label>進行中</label><div class="text-right"><input type="checkbox" v-model="CardMode" />卡片模式</div>
+        <div :class="{'card-deck':CardMode}">
         <div v-for="item in list" v-if="item.Completed==false && item.Deleted!==true" >
-            <div v-bind:data-Id="item.ID"  >
+            <div v-bind:data-Id="item.ID"  v-if="CardMode==false">
                 <div class=" align-self-center" v-if="item.ID!==clickedID">
                     <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
                     <label v-on:dblclick="edit(item)" 
-                           :class="{'completed':item.Completed}">{{item.Title}}</label>
+                           >{{item.Title}}</label>
 					<button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
 							<span aria-hidden="true">&times;</span>
 					</button>
                 </div>
 				<div>
-					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
+					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
 				</div>
             </div>
 
+            <div v-bind:data-Id="item.ID" v-if="item.ID!==clickedID && CardMode==true"  class="card " style="width: 16rem;">
+                    <div >
+                        <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
+                        <button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div v-on:dblclick="edit(item)" class="card-text">{{item.Title}}</div>
+                    </div>
+
+                
+				<div clsss="card-body" v-if="item.ID==clickedID">
+					<input class="form-control" v-model="clickedTitle"  v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
+				</div>
+            </div>
+            </div>
         </div>
         <br>
         <br>
@@ -72,7 +91,8 @@
             ],
 			clickedID:'',
 			clickedTitle:'',
-			clickedDetail:''
+            clickedDetail: '',
+            CardMode:false
 
         },
         methods: {
@@ -168,8 +188,8 @@
                             console.log('刪除成功');
 
                         }
-                        else {
-                            alert("刪除成功，請重新整理");
+                      else {
+                          alert("刪除失敗，請重新整理");
 
                         }
                     }
