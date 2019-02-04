@@ -44,6 +44,11 @@
     
 
     <script>
+		$('#Password').keypress(function (e) {
+			if (e.which == 13) {
+				LoginClick();
+		  }
+		});
         function LoginClick() {
             console.log('按下登入');         
             $.ajax({
