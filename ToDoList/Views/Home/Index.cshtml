@@ -12,7 +12,7 @@
 
     <div class="col-10" id="toDoList">
         <div>
-            <input v-model="newToDo" v-on:keyup.enter="addToDo" class="form-control" placeholder="新增事項">
+            <input v-model="newToDo" v-on:keypress.enter="addToDo" class="form-control" placeholder="新增事項">
         </div>
 		<br>
         <br>
@@ -28,7 +28,7 @@
 					</button>
                 </div>
 				<div>
-					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keyup.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
+					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
 				</div>
             </div>
 
@@ -43,7 +43,7 @@
                 <div class="">
                     <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
                     <label :class="{'completed':item.Completed}" v-on:dblclick="edit(item)">{{item.Title}}</label>
-					<textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keyup.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
+					<textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keypress.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
                 </div>
             </div>
 
