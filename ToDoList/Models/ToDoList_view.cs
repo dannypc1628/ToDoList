@@ -12,7 +12,7 @@ namespace ToDoList.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ToDoList
+    public partial class ToDoList_view
     {
         public int ID { get; set; }
         public int Owner_ID { get; set; }
@@ -22,8 +22,6 @@ namespace ToDoList.Models
         public Nullable<System.DateTime> Create_Date { get; set; }
         public Nullable<System.DateTime> Completed_Date { get; set; }
         public Nullable<bool> Deleted { get; set; }
-        public Nullable<int> Color_ID { get; set; }
-    
-        public virtual Color Color { get; set; }
+        public string Color_Name { get; set; }
     }
 }

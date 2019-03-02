@@ -30,12 +30,13 @@ namespace ToDoList.Controllers
 
             if (TokenResult.Status)
             {
-                List<Models.ToDoList> DoListData = new List<Models.ToDoList>();
+                List<Models.ToDoList_view> DoListData = new List<Models.ToDoList_view>();
                 int Users_Id = Convert.ToInt32(TokenResult.Users_Id);
-                DoListData = db.ToDoList.Where(a => a.Owner_ID == Users_Id).ToList();
+                DoListData = db.ToDoList_view.Where(a => a.Owner_ID == Users_Id).ToList();
                 if (DoListData.Count == 0)
                 { 
-                    DoListData.Add(new Models.ToDoList{
+                    DoListData.Add(new Models.ToDoList_view
+                    {
                                                           ID =0,
                                                           Completed = false,
                                                           Title="沒有待辦事項"
@@ -82,7 +83,8 @@ namespace ToDoList.Controllers
                     Title = Title,
                     Completed = DoListData.Completed,
                     Detail= DoListData.Detail,
-                    Deleted=DoListData.Deleted
+                    Deleted=DoListData.Deleted,
+                    Color_ID= DoListData.Color_ID
                 };
             }
             else
@@ -194,6 +196,41 @@ namespace ToDoList.Controllers
             {
                 DoListData = db.ToDoList.Where(a => a.Owner_ID == Users_Id).Where(a => a.ID == ID).FirstOrDefault();
                 DoListData.Title = Title;
+                db.SaveChanges();
+                Result = new { Status = true };
+            }
+            else
+            {
+                Result = new
+                {
+                    Status = false,
+                    ErrMsg = TokenResult.ErrMsg
+                };
+            }
+
+            string Output = JsonConvert.SerializeObject(Result);
+            return Output;
+        }
+
+        [HttpPost]
+        public string UpdateToDoColor(string Token, int ID, int Color_Id)
+        {
+
+            string IP = Request.UserHostAddress;
+
+            JwtToken Jwt = new JwtToken();
+            TokenCheckObj TokenResult = Jwt.CheckToken(Token, IP);
+
+            int Users_Id = Convert.ToInt32(TokenResult.Users_Id);
+
+            Models.ToDoList DoListData = new Models.ToDoList();
+
+            object Result = null;
+
+            if (TokenResult.Status)
+            {
+                DoListData = db.ToDoList.Where(a => a.Owner_ID == Users_Id).Where(a => a.ID == ID).FirstOrDefault();
+                DoListData.Color_ID = Color_Id;
                 db.SaveChanges();
                 Result = new { Status = true };
             }

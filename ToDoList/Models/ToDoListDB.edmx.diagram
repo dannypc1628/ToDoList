@@ -11,6 +11,9 @@
         <EntityTypeShape EntityType="ToDoListDBModel.Project_Users" Width="1.5" PointX="7" PointY="0.875" />
         <AssociationConnector Association="ToDoListDBModel.FK__Project_U__Proje__44FF419A" />
         <AssociationConnector Association="ToDoListDBModel.FK__Project_U__Users__45F365D3" />
+        <EntityTypeShape EntityType="ToDoListDBModel.Color" Width="1.5" PointX="0.75" PointY="3.375" />
+        <EntityTypeShape EntityType="ToDoListDBModel.ToDoList_view" Width="1.5" PointX="3.625" PointY="4.75" />
+        <AssociationConnector Association="ToDoListDBModel.FK__ToDoList__Color___49C3F6B7" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

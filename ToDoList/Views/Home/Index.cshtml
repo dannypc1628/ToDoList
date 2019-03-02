@@ -3,37 +3,44 @@
 }
 
 
-    <div class="col-2 text-right">
-		<br>
-		<br>
-		
-		<span class="h3">全部</span>
-    </div>
+<div class="col-2 text-center border-right">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="btn-group-vertical">
+        <button type="button" class="btn btn-outline-secondary" :class="{' active' : ColorFilter == 'all'}" v-on:click="ColorFilter = 'all'">全部標籤</button>
 
-    <div class="col-10" id="toDoList">
-        <div>
-            <input v-model="newToDo" v-on:keypress.enter="addToDo" class="form-control" placeholder="新增事項">
-        </div>
-		<br>
-        <br>
-        <label>進行中</label><div class="text-right"><input type="checkbox" v-model="CardMode" />卡片模式</div>
-        <div :class="{'card-deck':CardMode}">
-        <div v-for="item in list" v-if="item.Completed==false && item.Deleted!==true" >
-            <div v-bind:data-Id="item.ID"  v-if="CardMode==false">
+        <button type="button" class="btn btn-outline-primary " :class="{'active' : ColorFilter == 'primary'}" v-on:click="ColorFilter = 'primary'">藍色標籤</button>
+        <button type="button" class="btn btn-outline-success " :class="{'active' : ColorFilter == 'success'}" v-on:click="ColorFilter = 'success'">綠色標籤</button>
+        <button type="button" class="btn btn-outline-danger " :class="{'active' : ColorFilter == 'danger'}" v-on:click="ColorFilter = 'danger'">紅色標籤</button>
+    </div>
+</div>
+
+<div class="col-10 pl-5">
+    <div>
+        <input v-model="newToDo" v-on:keypress.enter="addToDo" class="form-control" placeholder="新增事項">
+    </div>
+    <br>
+    <br>
+    <label>進行中</label><div class="text-right"><input type="checkbox" v-model="CardMode" />卡片模式</div>
+    <div :class="{'card-deck':CardMode}">
+        <div v-for="item in FilterColor" v-if="item.Completed==false && item.Deleted!==true">
+            <div v-bind:data-Id="item.ID" v-if="CardMode==false">
                 <div class=" align-self-center" v-if="item.ID!==clickedID">
-                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
-                    <label v-on:dblclick="edit(item)" 
-                           >{{item.Title}}</label>
-					<button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
-							<span aria-hidden="true">&times;</span>
-					</button>
+                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
+                    <label v-on:dblclick="edit(item)">{{item.Title}}</label>
+                    <button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   
                 </div>
-				<div>
-					<input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
-				</div>
+                <div>
+                    <input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
+                </div>
             </div>
 
-            <div v-bind:data-Id="item.ID" v-if="CardMode==true"  class="card " style="width: 17rem;">
+            <div v-bind:data-Id="item.ID" v-if="CardMode==true" class="card " style="width: 17rem;">
                 <div class="card-body">
                     <div>
                         <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
@@ -47,293 +54,23 @@
                     <input class="form-control" v-if="item.ID==clickedID" v-model="clickedTitle" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
                 </div>
 
-                
-				
             </div>
-            </div>
-        </div>
-        <br>
-        <br>
-		<hr>
-
-        <label>已完成</label>
-        <div v-for="item in list" v-if="item.Completed==true && item.Deleted!==true">
-            <div v-bind:data-Id="item.ID">
-                <div class="">
-                    <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)"/>
-                    <label :class="{'completed':item.Completed}" v-on:dblclick="edit(item)">{{item.Title}}</label>
-					<textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keypress.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
-                </div>
-            </div>
-
         </div>
     </div>
 
+    <br>
+    <br>
+    <hr>
 
+    <label>已完成</label>
+    <div v-for="item in FilterColor" v-if="item.Completed==true && item.Deleted!==true">
+        <div v-bind:data-Id="item.ID">
+            <div class="">
+                <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
+                <label :class="{'completed':item.Completed}" v-on:dblclick="edit(item)">{{item.Title}}</label>
+                <textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keypress.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
+            </div>
+        </div>
 
-
-<style>
-    .completed{
-        text-decoration:line-through
-    }
-</style>
-<script>
-    var app = new Vue({
-        el: '#toDoList',
-        data: {
-            newToDo: '',
-            list: [
-                {
-                    ID: '123',
-                    Title: '正在載入...',
-                    Completed: false
-                }
-            ],
-			clickedID:'',
-			clickedTitle:'',
-            clickedDetail: '',
-            CardMode:false
-
-        },
-        methods: {
-            addToDo:function() {
-                var title = this.newToDo.trim();
-                //var id = Math.floor(Math.random() * 1000);
-                console.log('使用者新增：' + this.newToDo);
-                if (!title) {
-                    return;
-                }
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/AddToDo',
-                    data: 'token=' + localStorage.token + '&Title=' + title,
-                    dataType: "JSON",
-                    error: function () { console.log('連線異常') },
-                    success: function (returnData) {
-                        console.log(returnData);
-                        if (returnData.Status == true) {
-                            //window.location.reload();
-                            app.list.push({
-                                ID: returnData.ID,
-                                Title: returnData.Title,
-                                Completed: returnData.Completed,
-                                Owner_ID: '12314234',
-                                Detail: '',
-                                Create_Date: null,
-                                Completed_Date: null
-
-                            });
-                            app.newToDo = '';
-                            console.log('新增成功');
-
-                        }
-                        else {
-                            alert("新增失敗");
-
-                        }
-                    }
-                });
-
-
-
-
-
-            },
-
-
-            completed: function (key) {
-
-                console.log('使用者勾選編號：' + key);
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/UpdateToDoCompleted',
-                    data: 'token=' + localStorage.token + '&ID=' + key,
-                    dataType: "JSON",
-                    error: function () { console.log('連線異常') },
-                    success: function (returnData) {
-                        console.log(returnData);
-                        if (returnData.Status == true) {
-						                         
-                            console.log('更新成功');
-
-                        }
-                        else {
-                            alert("更新失敗，請重新整理");
-
-                        }
-                    }
-                });
-
-            },
-			deleted: function (item) {
-
-                console.log('使用者刪除編號：' + item.ID);
-				var thisIndex = this.list.findIndex(function (listItem,key){
-								return item.ID===listItem.ID
-							});
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/UpdateToDoDeleted',
-                    data: 'token=' + localStorage.token + '&ID=' + item.ID,
-                    dataType: "JSON",
-                    error: function () { console.log('連線異常') },
-                    success: function (returnData) {
-                        console.log(returnData);
-                        if (returnData.Status == true) {
-						    app.list[thisIndex].Deleted = true;                     
-                            console.log('刪除成功');
-
-                        }
-                      else {
-                          alert("刪除失敗，請重新整理");
-
-                        }
-                    }
-                });
-
-            },
-
-			edit:function(item){
-				console.log('雙擊:',item.ID);
-				this.clickedID=item.ID;
-				this.clickedTitle=item.Title;
-				this.clickedDetail=item.Detail;
-
-			},
-			cancelEdit:function(){
-				console.log('取消編輯');
-				this.clickedID='';
-				this.clickedTitle='';
-				this.clickedDetail='';
-			},
-			updateTitle:function(item){
-				console.log('使用者修改編號：' + this.clickedID +'之標題');
-                var thisIndex = getThisIndex(item);
-                //var thisIndex2 = this.list.findIndex(function (listItem, key) {
-                //    return item.ID === listItem.ID
-                //});
-                //console.log('thisIndex2 is ' + thisIndex2);
-				axios.post('/Home/UpdateToDoTitle', {
-						token: localStorage.token,
-						ID: this.clickedID,
-						Title: this.clickedTitle						
-					})
-					.then(function(response) {
-						console.log(response);
-						if (response.data.Status == true) {
-                            app.list[thisIndex].Title=app.clickedTitle;
-                            app.clickedID='';
-							app.clickedTitle='';
-                            console.log('更新成功');
-
-                        }
-                        else {
-                            alert("更新失敗");
-
-                        }
-					})
-					.catch(function(error) {
-						console.log(error);
-					})
-
-                /*$.ajax({
-                    type: 'POST',
-                    url: '/Home/UpdateToDoTitle',
-                    data: 'token=' + localStorage.token + '&ID=' + this.clickedID +  '&Title='+this.clickedTitle,
-                    dataType: "JSON",
-                    error: function () { console.log('連線異常') },
-                    success: function (returnData) {
-                        console.log(returnData);
-                        if (returnData.Status == true) {
-							item.Title=this.clickedTitle;
-                            app.clickedID='';
-							app.clickedTitle='';
-							app.clickedDetail='';
-                            console.log('更新成功');
-
-                        }
-                        else {
-                            alert("更新失敗");
-
-                        }
-						
-                    }
-                });*/
-			},
-			updateDetail:function(item){
-				console.log('使用者修改編號：' + this.clickedID +'之標題');
-                var thisIndex = getThisIndex(item);
-				axios.post('/Home/UpdateToDoDetail', {
-						token: localStorage.token,
-						ID: this.clickedID,
-						Detail: this.clickedDetail						
-					})
-					.then(function(response) {
-						console.log(response);
-						if (response.data.Status == true) {
-							
-							app.list[thisIndex].Detail=app.clickedDetail;
-                            app.clickedID='';
-							app.clickedTitle='';
-							app.clickedDetail='';
-                            console.log('更新成功');
-
-                        }
-                        else {
-                            alert("更新失敗");
-
-                        }
-					})
-					.catch(function(error) {
-						console.log(error);
-					})
-			}
-
-        }
-    });
-
-    
-    GetToDoList();
-    function GetToDoList() {
-        console.log('拿代辦事項');
-        $.ajax({
-            type: 'POST',
-            url: '/Home/GetToDoList',
-            data: 'token='+localStorage.token,
-            dataType: "JSON",
-            error: function () { console.log('連線異常') },
-            success: function (returnData) {
-                console.log(returnData);
-                if (returnData.Status == true) {
-                    app.list=returnData.List;
-                    //document.location.href = "/home";
-
-                    console.log(returnData.List);
-                }
-                else {
-                    alert("登入驗證錯誤!");
-                    document.location.href = "/Login";
-                }
-            }
-        });
-    }
-
-    function getThisIndex(item) {
-        var thisIndex;
-        app.list.some(function (el, i) {
-            if (el.ID === item.ID) {
-                console.log('thisIndex is ' + i)
-                thisIndex = i;
-            }
-        });
-        //console.log('getThisIndex  thisIndex is ' + thisIndex)
-        return thisIndex;
-    }
-
-
-
-</script>
+    </div>
+</div>

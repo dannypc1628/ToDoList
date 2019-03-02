@@ -12,18 +12,18 @@ namespace ToDoList.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ToDoList
+    public partial class Color
     {
-        public int ID { get; set; }
-        public int Owner_ID { get; set; }
-        public string Title { get; set; }
-        public string Detail { get; set; }
-        public Nullable<bool> Completed { get; set; }
-        public Nullable<System.DateTime> Create_Date { get; set; }
-        public Nullable<System.DateTime> Completed_Date { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<int> Color_ID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Color()
+        {
+            this.ToDoList = new HashSet<ToDoList>();
+        }
     
-        public virtual Color Color { get; set; }
+        public int ID { get; set; }
+        public string Color_Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ToDoList> ToDoList { get; set; }
     }
 }

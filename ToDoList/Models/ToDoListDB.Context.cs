@@ -29,5 +29,7 @@ namespace ToDoList.Models
         public virtual DbSet<ToDoList> ToDoList { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Project_Users> Project_Users { get; set; }
+        public virtual DbSet<Color> Color { get; set; }
+        public virtual DbSet<ToDoList_view> ToDoList_view { get; set; }
     }
 }

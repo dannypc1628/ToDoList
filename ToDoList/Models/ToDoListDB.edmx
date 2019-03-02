@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ToDoListDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Color_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="ID" />
@@ -32,6 +39,7 @@
           <Property Name="Create_Date" Type="datetime" />
           <Property Name="Completed_Date" Type="datetime" />
           <Property Name="Deleted" Type="bit" />
+          <Property Name="Color_ID" Type="int" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -43,6 +51,25 @@
           <Property Name="Password" Type="char" MaxLength="20" Nullable="false" />
           <Property Name="Phone" Type="char" MaxLength="20" />
           <Property Name="Email" Type="char" MaxLength="30" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'ToDoListDB.dbo.ToDoList_view' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="ToDoList_view">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Owner_ID" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Color_Name" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Owner_ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Detail" Type="nvarchar" MaxLength="255" />
+          <Property Name="Completed" Type="bit" />
+          <Property Name="Create_Date" Type="datetime" />
+          <Property Name="Completed_Date" Type="datetime" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="Color_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK__Project_U__Proje__44FF419A">
           <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
@@ -68,11 +95,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ToDoList__Color___49C3F6B7">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="ToDoList" Type="Self.ToDoList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ToDoList">
+              <PropertyRef Name="Color_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ToDoListDBModelStoreContainer">
+          <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project_Users" EntityType="Self.Project_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ToDoList" EntityType="Self.ToDoList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ToDoList_view" EntityType="Self.ToDoList_view" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ToDoList_view].[ID] AS [ID], 
+    [ToDoList_view].[Owner_ID] AS [Owner_ID], 
+    [ToDoList_view].[Title] AS [Title], 
+    [ToDoList_view].[Detail] AS [Detail], 
+    [ToDoList_view].[Completed] AS [Completed], 
+    [ToDoList_view].[Create_Date] AS [Create_Date], 
+    [ToDoList_view].[Completed_Date] AS [Completed_Date], 
+    [ToDoList_view].[Deleted] AS [Deleted], 
+    [ToDoList_view].[Color_Name] AS [Color_Name]
+    FROM [dbo].[ToDoList_view] AS [ToDoList_view]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__Project_U__Proje__44FF419A" Association="Self.FK__Project_U__Proje__44FF419A">
             <End Role="Project" EntitySet="Project" />
             <End Role="Project_Users" EntitySet="Project_Users" />
@@ -80,6 +133,10 @@
           <AssociationSet Name="FK__Project_U__Users__45F365D3" Association="Self.FK__Project_U__Users__45F365D3">
             <End Role="Users" EntitySet="Users" />
             <End Role="Project_Users" EntitySet="Project_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ToDoList__Color___49C3F6B7" Association="Self.FK__ToDoList__Color___49C3F6B7">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="ToDoList" EntitySet="ToDoList" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -106,6 +163,8 @@
           <Property Name="Create_Date" Type="DateTime" Precision="3" />
           <Property Name="Completed_Date" Type="DateTime" Precision="3" />
           <Property Name="Deleted" Type="Boolean" />
+          <Property Name="Color_ID" Type="Int32" />
+          <NavigationProperty Name="Color" Relationship="ToDoListDBModel.FK__ToDoList__Color___49C3F6B7" FromRole="ToDoList" ToRole="Color" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -131,6 +190,12 @@
           <AssociationSet Name="FK__Project_U__Users__45F365D3" Association="ToDoListDBModel.FK__Project_U__Users__45F365D3">
             <End Role="Users" EntitySet="Users" />
             <End Role="Project_Users" EntitySet="Project_Users" />
+          </AssociationSet>
+          <EntitySet Name="Color" EntityType="ToDoListDBModel.Color" />
+          <EntitySet Name="ToDoList_view" EntityType="ToDoListDBModel.ToDoList_view" />
+          <AssociationSet Name="FK__ToDoList__Color___49C3F6B7" Association="ToDoListDBModel.FK__ToDoList__Color___49C3F6B7">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="ToDoList" EntitySet="ToDoList" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Project_Users">
@@ -167,6 +232,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ToDoList" Relationship="ToDoListDBModel.FK__ToDoList__Color___49C3F6B7" FromRole="Color" ToRole="ToDoList" />
+          <Property Name="Color_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ToDoList_view">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Owner_ID" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Color_Name" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Owner_ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Detail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Completed" Type="Boolean" />
+          <Property Name="Create_Date" Type="DateTime" Precision="3" />
+          <Property Name="Completed_Date" Type="DateTime" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="Color_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__ToDoList__Color___49C3F6B7">
+          <End Type="ToDoListDBModel.Color" Role="Color" Multiplicity="0..1" />
+          <End Type="ToDoListDBModel.ToDoList" Role="ToDoList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ToDoList">
+              <PropertyRef Name="Color_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -184,6 +286,7 @@
           <EntitySetMapping Name="ToDoList">
             <EntityTypeMapping TypeName="ToDoListDBModel.ToDoList">
               <MappingFragment StoreEntitySet="ToDoList">
+                <ScalarProperty Name="Color_ID" ColumnName="Color_ID" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Owner_ID" ColumnName="Owner_ID" />
@@ -213,6 +316,29 @@
                 <ScalarProperty Name="Users_ID" ColumnName="Users_ID" />
                 <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
                 <ScalarProperty Name="Idx" ColumnName="Idx" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Color">
+            <EntityTypeMapping TypeName="ToDoListDBModel.Color">
+              <MappingFragment StoreEntitySet="Color">
+                <ScalarProperty Name="Color_Name" ColumnName="Color_Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ToDoList_view">
+            <EntityTypeMapping TypeName="ToDoListDBModel.ToDoList_view">
+              <MappingFragment StoreEntitySet="ToDoList_view">
+                <ScalarProperty Name="Color_Name" ColumnName="Color_Name" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Completed_Date" ColumnName="Completed_Date" />
+                <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Owner_ID" ColumnName="Owner_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+ToDoList/Webform/WebForm1.aspx
+ToDoList/Webform/WebForm1.aspx.cs
+ToDoList/Webform/WebForm1.aspx.designer.cs
+ToDoList/Webform/WebForm2.aspx
+ToDoList/Webform/WebForm2.aspx.cs
+ToDoList/Webform/WebForm2.aspx.designer.cs

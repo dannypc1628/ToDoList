@@ -12,7 +12,6 @@
     @Scripts.Render("~/Content/JavaScript/axios.min.js")
     @Scripts.Render("~/Content/JavaScript/vue.js")
     @Scripts.Render("~/Content/Bootstrap4/bootstrap.min.js")
-
     <title>@ViewBag.Title</title>
     <style>
         body {
@@ -21,47 +20,58 @@
         }
     </style>
 </head>
-<body >
+<body>
 
-    <header>
-        <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-            <a class="navbar-brand navbar-light" href="/home">線上待辦清單</a>
-			@if(ViewBag.HomeTag != null){
-			<div class="d-flex flex-row-reverse w-100">
-				
-					<div class="btn btn-outline-light" onclick="Logout()">登出</div>	
-				
-			</div>
-			}
-        </div>
-    </header>
 
-    <br />
-            <br />
-            <br />
-    <div class="container">
+    <div id="toDoList">
+        <header>
+            <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+                <a class="navbar-brand navbar-light" href="/home">線上待辦清單</a>
+                @if (ViewBag.HomeTag != null)
+                {
+                    <div class="d-flex flex-row-reverse w-100">
 
-        <div class="row">
-            
-            @RenderBody()
-            <br />
-        </div>
-		<hr>
-		<div class="fixed-buttom"><spn>劉長庚 &nbsp; 天主教輔仁大學資訊工程所</spn> 
-            <div class="float-right">
-                <a href="https://www.facebook.com/dannyliu.me/">fb:長庚的作業簿</a>
-                &nbsp; &nbsp;
-                <a href="https://github.com/dannypc1628/ToDoList">程式碼:github</a>
-            </div> 
+                        <div class="btn btn-outline-light" onclick="Logout()">登出</div>
+
+                    </div>
+                }
+            </div>
+        </header>
+
+        <br />
+        <br />
+        <br />
+        <div class="container">
+
+            <div class="row">
+
+                @RenderBody()
+                <br />
+            </div>
+            <hr>
+            <div class="fixed-buttom">
+                <span>劉長庚 &nbsp; 天主教輔仁大學資訊工程所</span>
+                <div class="float-right">
+                    <a href="https://www.facebook.com/dannyliu.me/">fb:長庚的作業簿</a>
+                    &nbsp; &nbsp;
+                    <a href="https://github.com/dannypc1628/ToDoList">程式碼:github</a>
+                </div>
+            </div>
         </div>
     </div>
-	<script>
-	function Logout(){
-		console.log('登出')
-		localStorage.clear();
-		document.location.href = "/Login";
-	}
-	</script>
+    <script type="application/javascript" src="/Content/JavaScript/index.js"></script>
+    <script>
+        function Logout() {
+            console.log('登出')
+            localStorage.clear();
+            document.location.href = "/Login";
+        }
+    </script>
+    <style>
+        .completed {
+            text-decoration: line-through
+        }
+    </style>
 
 </body>
 </html>

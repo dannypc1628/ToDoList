@@ -7,7 +7,8 @@ Create Table ToDoList
 	Completed bit,
 	Create_Date datetime ,
 	Completed_Date datetime ,
-	Deleted bit
+	Deleted bit,
+	Color_ID int REFERENCES Color(ID)
 )
 Create Table Users
 (
@@ -28,4 +29,10 @@ Create Table Project_Users
 	Idx int PRIMARY KEY IDENTITY (1,1),
 	Project_ID  int REFERENCES Project(ID),
 	Users_ID  int REFERENCES Users(ID)
+)
+Create Table Color
+(
+	ID int PRIMARY KEY IDENTITY (1,1),
+	Color nvarchar(50) NOT NULL 
+	
 )
