@@ -226,7 +226,15 @@
                 if (this.list != null)
                     return getThisColorList('primary', this.list)
             }
-            return [];
+            else if (this.ColorFilter == 'success') {
+                if (this.list != null)
+                    return getThisColorList('success', this.list)
+            }
+            else if (this.ColorFilter == 'danger') {
+                if (this.list != null)
+                    return getThisColorList('danger', this.list)
+            } 
+            
         }
     }
 });
@@ -271,7 +279,7 @@ function getThisIndex(item) {
 function getThisColorList(color,list) {
     var ColorList = [];
     list.some(function (el, i) {
-        if (el.Color === color) {
+        if (el.Color_Name === color) {
             console.log('index ' + i +' is '+color)
             ColorList.push(el);
         }
