@@ -28,23 +28,36 @@
             <label>進行中</label>
         </div>
         <div >
-            <input type="checkbox" v-model="CardMode" class="text-right" /><label >卡片模式</label>
+            <input type="checkbox" v-model="CardMode" class="text-right" id="CardModeCheckbox"/><label for="CardModeCheckbox">卡片模式</label>
         </div>
     </div>
     <div :class="{'card-deck':CardMode}">
         <div v-for="item in FilterColor" v-if="item.Completed==false && item.Deleted!==true" class="list-group">
             <div v-bind:data-Id="item.ID" v-if="CardMode==false" 
-                 :class="{'list-group-item' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}" >
-                <div  v-if="item.ID!==clickedID">
+                 :class="{'list-group-item ' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}" >
+                <div v-if="item.ID!==clickedID">
                     <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
                     <label v-on:dblclick="edit(item)">{{item.Title}}</label>
+                   
                     <button type="button" class="close" aria-label="Close" v-on:click="deleted(item)">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                   
+                    <div class="btn-group" style="float: right;">
+                        
+                        <input type="button" class="btn  mt-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                               style="background-image:url(/Content/color5.png);background-repeat: no-repeat;background-color: rgba(0,0,0,0); border: none; height:20px;width:20px ;background-position: center bottom;">
+
+                        <div class="dropdown-menu" width="30%">
+                            <a class="dropdown-item border  bg-light" v-on:click="changeColor(item,'all')">無</a>
+                            <a class="dropdown-item border bg-primary" v-on:click="changeColor(item,'primary')">&nbsp;</a>
+                            <a class="dropdown-item border bg-success" v-on:click="changeColor(item,'success')">&nbsp;</a>
+                            <a class="dropdown-item border bg-danger" v-on:click="changeColor(item,'danger')">&nbsp;</a>
+                            
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
+                    <input class="form-control" v-model="clickedTitle" v-if="item.ID==clickedID" v-on:keypress.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
                 </div>
             </div>
 
@@ -56,11 +69,24 @@
                         <button type="button" class="close " aria-label="Close" v-on:click="deleted(item)">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <div class="btn-group" style="float: right;">
+
+                            <input type="button" class="btn  mt-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                   style="background-image:url(/Content/color5.png);background-repeat: no-repeat;background-color: rgba(0,0,0,0); border: none; height:20px;width:20px ;background-position: center bottom;">
+
+                            <div class="dropdown-menu" width="30%">
+                                <a class="dropdown-item border  bg-light" v-on:click="changeColor(item,'all')">無</a>
+                                <a class="dropdown-item border bg-primary" v-on:click="changeColor(item,'primary')">&nbsp;</a>
+                                <a class="dropdown-item border bg-success" v-on:click="changeColor(item,'success')">&nbsp;</a>
+                                <a class="dropdown-item border bg-danger" v-on:click="changeColor(item,'danger')">&nbsp;</a>
+
+                            </div>
+                        </div>
                     </div>
 
 
                     <div v-if="item.ID!==clickedID" v-on:dblclick="edit(item)" class="card-text">{{item.Title}}</div>
-                    <input class="form-control" v-if="item.ID==clickedID" v-model="clickedTitle" v-on:keypress.enter="updateTitle(item)" v-on:keypress.esc="cancelEdit">
+                    <input class="form-control" v-if="item.ID==clickedID" v-model="clickedTitle" v-on:keypress.enter="updateTitle(item)" v-on:keyup.esc="cancelEdit">
                 </div>
 
             </div>

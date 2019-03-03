@@ -68,7 +68,8 @@ namespace ToDoList.Controllers
                 Owner_ID = Convert.ToInt32(TokenResult.Users_Id),
                 Title = Title,
                 Create_Date = DateTime.Now,
-                Completed = false
+                Completed = false,
+                Color_ID = 1
             };
 
             object Result = null;
@@ -139,6 +140,7 @@ namespace ToDoList.Controllers
             return Output;
         }
 
+        [HttpPost]
         public string UpdateToDoDeleted(string Token, int ID)
         {
 
@@ -213,7 +215,7 @@ namespace ToDoList.Controllers
         }
 
         [HttpPost]
-        public string UpdateToDoColor(string Token, int ID, int Color_Id)
+        public string UpdateToDoColor(string Token, int ID, string ColorN)
         {
 
             string IP = Request.UserHostAddress;
@@ -223,14 +225,16 @@ namespace ToDoList.Controllers
 
             int Users_Id = Convert.ToInt32(TokenResult.Users_Id);
 
+            Models.Color ColorData = new Models.Color();
             Models.ToDoList DoListData = new Models.ToDoList();
 
             object Result = null;
 
             if (TokenResult.Status)
             {
+                ColorData = db.Color.Where(a => a.Color_Name == ColorN).FirstOrDefault();
                 DoListData = db.ToDoList.Where(a => a.Owner_ID == Users_Id).Where(a => a.ID == ID).FirstOrDefault();
-                DoListData.Color_ID = Color_Id;
+                DoListData.Color_ID = ColorData.ID;
                 db.SaveChanges();
                 Result = new { Status = true };
             }

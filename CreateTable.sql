@@ -1,14 +1,21 @@
+Create Table Color
+(
+	ID int PRIMARY KEY IDENTITY (1,1),
+	Color_Name nvarchar(50) NOT NULL 
+	
+)
+
 Create Table ToDoList
 (
 	ID int PRIMARY KEY IDENTITY (1,1),
 	Owner_ID int NOT NULL,
 	Title nvarchar(50) NOT NULL,
 	Detail nvarchar(255),
-	Completed bit,
+	Completed bit DEFAULT 0,
 	Create_Date datetime ,
 	Completed_Date datetime ,
-	Deleted bit,
-	Color_ID int REFERENCES Color(ID)
+	Deleted bit DEFAULT 0,
+	Color_ID int REFERENCES Color(ID) DEFAULT 1
 )
 Create Table Users
 (
@@ -30,9 +37,4 @@ Create Table Project_Users
 	Project_ID  int REFERENCES Project(ID),
 	Users_ID  int REFERENCES Users(ID)
 )
-Create Table Color
-(
-	ID int PRIMARY KEY IDENTITY (1,1),
-	Color nvarchar(50) NOT NULL 
-	
-)
+

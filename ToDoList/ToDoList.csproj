@@ -236,6 +236,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.css" />
     <Content Include="Content\Bootstrap4\bootstrap.min.js" />
+    <Content Include="Content\color.png" />
+    <Content Include="Content\color2.png" />
+    <Content Include="Content\color3.png" />
+    <Content Include="Content\color5.png" />
     <Content Include="Content\JavaScript\axios.min.js" />
     <Content Include="Content\JavaScript\index.js" />
     <Content Include="Content\JavaScript\jquery-3.3.1.min.js" />

@@ -43,7 +43,9 @@
                             Owner_ID: '12314234',
                             Detail: '',
                             Create_Date: null,
-                            Completed_Date: null
+                            Completed_Date: null,
+                            Deleted: returnData.Deleted,
+                            Color_Name: 'all'
 
                         });
                         app.newToDo = '';
@@ -90,12 +92,36 @@
             });
 
         },
+        changeColor: function (item, ColorN) {
+
+            console.log('使用者要改變編號：' + item.ID + '之顏色為' + ColorN);
+            var thisIndex = getThisIndex(item);
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/UpdateToDoColor',
+                data: 'token=' + localStorage.token + '&ID=' + item.ID + '&ColorN=' + ColorN,
+                dataType: "JSON",
+                error: function () { console.log('連線異常') },
+                success: function (returnData) {
+                    console.log(returnData);
+                    if (returnData.Status == true) {
+                        app.list[thisIndex].Color_Name = ColorN;
+                        console.log('更新成功');
+
+                    }
+                    else {
+                        alert("更新失敗，請重新整理");
+
+                    }
+                }
+            });
+
+        },
         deleted: function (item) {
 
             console.log('使用者刪除編號：' + item.ID);
-            var thisIndex = this.list.findIndex(function (listItem, key) {
-                return item.ID === listItem.ID
-            });
+            var thisIndex = getThisIndex(item);
 
             $.ajax({
                 type: 'POST',
