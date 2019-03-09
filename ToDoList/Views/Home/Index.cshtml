@@ -99,9 +99,10 @@
     <hr>
 
     <label>已完成</label>
-    <div v-for="item in FilterColor" v-if="item.Completed==true && item.Deleted!==true">
+    <div v-for="item in FilterColor" v-if="item.Completed==true && item.Deleted!==true"
+         :class="{'list-group-item' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}" >
         <div v-bind:data-Id="item.ID">
-            <div :class="{'list-group-item' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}" >
+            <div >
                 <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
                 <label :class="{'completed':item.Completed}" v-on:dblclick="edit(item)">{{item.Title}}</label>
                 <textarea class="form-control" v-model="clickedDetail" v-if="item.ID==clickedID" v-on:keypress.enter="updateDetail(item)" v-on:keyup.esc="cancelEdit"></textarea>
