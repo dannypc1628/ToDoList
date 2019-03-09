@@ -43,34 +43,7 @@
     <br>
     
 
-    <script>
-		$('#Password').keypress(function (e) {
-			if (e.which == 13) {
-				LoginClick();
-		  }
-		});
-        function LoginClick() {
-            console.log('按下登入');         
-            $.ajax({
-                type: 'POST',
-                url: '/Login',
-                data: "Account=" + $('#Account').val() +"&Password=" + $('#Password').val(),
-                dataType: "JSON",
-                error: function () {'連線異常'},
-                success: function (returnData) {
-                    console.log(returnData.status);
-                    if (returnData.status == true) {
-                        localStorage.token = returnData.token;
-                        document.location.href = "/home";
-                    }
-                    else {
-                        $('#errMsg').text(returnData.errMsg);
-                        //console.log('更改文字')
-                    }                   
-                 }                                
-            });
-        }
-    </script>
+    
 
 
 </main>

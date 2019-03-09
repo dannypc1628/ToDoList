@@ -32,9 +32,10 @@
         </div>
     </div>
     <div :class="{'card-deck':CardMode}">
-        <div v-for="item in FilterColor" v-if="item.Completed==false && item.Deleted!==true" class="list-group">
+        <div v-for="item in FilterColor" v-if="item.Completed==false && item.Deleted!==true" 
+             :class="{'list-group-item ' :item.Color_Name == 'all'&&!CardMode,'list-group-item list-group-item-primary' :item.Color_Name == 'primary'&&!CardMode,'list-group-item list-group-item-success' :item.Color_Name == 'success'&&!CardMode,'list-group-item list-group-item-danger' :item.Color_Name == 'danger'&&!CardMode}" >
             <div v-bind:data-Id="item.ID" v-if="CardMode==false" 
-                 :class="{'list-group-item ' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}" >
+                 >
                 <div v-if="item.ID!==clickedID">
                     <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
                     <label v-on:dblclick="edit(item)">{{item.Title}}</label>
@@ -61,9 +62,9 @@
                 </div>
             </div>
 
-            <div v-bind:data-Id="item.ID" v-if="CardMode==true" class="card " style="width: 17rem;"
-                 :class="{'list-group-item' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}"  >
-                <div class="card-header">
+            <div v-bind:data-Id="item.ID" v-if="CardMode==true" class="card " style="width: 17rem;" 
+                 :class="{'list-group-item' :item.Color_Name == 'all','list-group-item list-group-item-primary' :item.Color_Name == 'primary','list-group-item list-group-item-success' :item.Color_Name == 'success','list-group-item list-group-item-danger' :item.Color_Name == 'danger'}">
+                <div class="card-header" >
                     <div>
                         <input type="checkbox" v-model="item.Completed" :ID="item.ID" v-on:click="completed(item.ID)" />
                         <button type="button" class="close " aria-label="Close" v-on:click="deleted(item)">
